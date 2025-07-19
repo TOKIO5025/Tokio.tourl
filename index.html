@@ -1,53 +1,97 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>MyFileBox</title>
+  <title>Tokio - Uploader</title>
   <style>
     body {
-      font-family: sans-serif;
-      background: #1e1e1e;
-      color: #fff;
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
       text-align: center;
-      padding-top: 100px;
+      padding: 50px;
+      color: #333;
+    }
+    h1 {
+      font-size: 40px;
+    }
+    .logo {
+      font-family: monospace;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .upload-box {
+      background: #eaf6ff;
+      border: 2px dashed #2196F3;
+      padding: 40px;
+      margin: auto;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 10px;
     }
     input[type="file"] {
       margin: 20px 0;
     }
+    .link-box {
+      margin-top: 20px;
+      background: #d0ffd0;
+      padding: 10px;
+      word-wrap: break-word;
+      border-radius: 8px;
+    }
     button {
-      background: #4caf50;
+      padding: 10px 20px;
+      background-color: #2196F3;
       color: white;
       border: none;
-      padding: 10px 20px;
+      border-radius: 5px;
       cursor: pointer;
     }
     button:hover {
-      background: #45a049;
+      background-color: #1976D2;
+    }
+    .footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #999;
     }
   </style>
 </head>
 <body>
-  <h1>📦 MyFileBox</h1>
-  <p>Sube tu archivo y compártelo</p>
 
-  <input type="file" id="fileInput" />
-  <br />
-  <button onclick="uploadFile()">Subir</button>
+  <div class="logo">📦 <strong>TokioUploader</strong></div>
+  <h1>Sube archivos fácilmente</h1>
+  <p>Archivos hasta 200MB – Recibe un link directo al instante</p>
 
-  <p id="result"></p>
+  <div class="upload-box">
+    <input type="file" id="fileInput"><br>
+    <button onclick="uploadToCatbox()">Subir</button>
+    <div id="result" class="link-box"></div>
+  </div>
+
+  <div class="footer">
+    Sitio creado por TOKIO5025 | Basado en la API de Catbox.moe
+  </div>
 
   <script>
-    function uploadFile() {
+    async function uploadToCatbox() {
       const input = document.getElementById('fileInput');
-      if (!input.files[0]) {
-        return alert('Selecciona un archivo');
-      }
-
-      // Este ejemplo solo muestra el nombre del archivo. No guarda en ningún lado.
       const file = input.files[0];
-      document.getElementById('result').innerText = `✅ Archivo "${file.name}" listo (esto es solo un demo)`;
+      if (!file) return alert("Selecciona un archivo primero");
+
+      const form = new FormData();
+      form.append("reqtype", "fileupload");
+      form.append("fileToUpload", file);
+
+      const res = await fetch("https://catbox.moe/user/api.php", {
+        method: "POST",
+        body: form
+      });
+
+      const link = await res.text();
+      document.getElementById("result").innerHTML = 
+        `<strong>✅ Enlace generado:</strong><br><a href="${link}" target="_blank">${link}</a>`;
     }
   </script>
+
 </body>
 </html>
