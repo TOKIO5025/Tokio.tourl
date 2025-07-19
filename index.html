@@ -1,0 +1,53 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>MyFileBox</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #1e1e1e;
+      color: #fff;
+      text-align: center;
+      padding-top: 100px;
+    }
+    input[type="file"] {
+      margin: 20px 0;
+    }
+    button {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>📦 MyFileBox</h1>
+  <p>Sube tu archivo y compártelo</p>
+
+  <input type="file" id="fileInput" />
+  <br />
+  <button onclick="uploadFile()">Subir</button>
+
+  <p id="result"></p>
+
+  <script>
+    function uploadFile() {
+      const input = document.getElementById('fileInput');
+      if (!input.files[0]) {
+        return alert('Selecciona un archivo');
+      }
+
+      // Este ejemplo solo muestra el nombre del archivo. No guarda en ningún lado.
+      const file = input.files[0];
+      document.getElementById('result').innerText = `✅ Archivo "${file.name}" listo (esto es solo un demo)`;
+    }
+  </script>
+</body>
+</html>
